@@ -1,0 +1,63 @@
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+
+bool validar_cadena_abb(const std::string& cadena) {
+    
+    int matriz_transiciones[4][2] = {
+        {1, 0}, 
+        {1, 2},
+        {1, 3}, 
+        {3, 3}  
+    };
+
+    int estado_actual = 0; 
+
+    for (char c : cadena) {
+        int indice_entrada = -1;
+
+        
+        if (c == 'a') {
+            indice_entrada = 0;
+        } else if (c == 'b') {
+            indice_entrada = 1;
+        } else {
+            
+            return false;
+        }
+
+       
+        estado_actual = matriz_transiciones[estado_actual][indice_entrada];
+    }
+
+    
+    return estado_actual == 3;
+}
+
+int main() {
+    
+    std::vector<std::string> pruebas = {
+        "abb",       // Aceptada (exactamente la subcadena)
+        "babb",      // Aceptada (subcadena al final)
+        "ababb",     // Aceptada (contiene la subcadena)
+        "aababbb",   // Aceptada (contiene la subcadena en medio)
+        "aba",       // Rechazada
+        "bbba",      // Rechazada
+        "ab",        // Rechazada (incompleta)
+        "a",         // Rechazada
+        "b"          // Rechazada
+    };
+
+    std::cout << "Analizador Lexico (Subcadena 'abb')\n";
+    std::cout << "-----------------------------------\n";
+
+    for (const auto& cadena : pruebas) {
+        bool resultado = validar_cadena_abb(cadena);
+        std::cout << "Cadena: '" << cadena << "'\t-> "
+                  << (resultado ? "ACEPTADA" : "RECHAZADA") << "\n";
+    }
+
+    return 0;
+}
